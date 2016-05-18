@@ -1,2 +1,2 @@
 git pull
-javac -cp ./lib/pi4j-core.jar:. src/main/*.java
+javac -cp ./lib/pi4j-core.jar:. src/*.java
