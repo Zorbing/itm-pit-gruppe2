@@ -6,12 +6,12 @@ public class Main
 	{
 		System.out.println("Program started.");
 		BrightnessThreshold test = new BrightnessThreshold();
+		test.start();
 		
 		while (true)
 		{
-			test.run();
-			Thread.sleep(5000);
+			Thread.sleep(500);
 		}
-//		test.terminate();
+//		test.shutdown();
 	}
 }

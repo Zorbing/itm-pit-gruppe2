@@ -6,35 +6,35 @@ import com.pi4j.io.gpio.GpioPinDigitalInput;
 import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import com.pi4j.io.gpio.PinState;
 import com.pi4j.io.gpio.RaspiPin;
+import com.pi4j.io.gpio.event.GpioPinDigitalStateChangeEvent;
+import com.pi4j.io.gpio.event.GpioPinListener;
 
-/**
-* This example code demonstrates how to perform simple state
-* control of a GPIO pin on the Raspberry Pi.  
-* 
-* @author Robert Savage
-*/
-public class BrightnessThreshold
+
+public class BrightnessThreshold implements GpioPinListener
 {
 	private GpioController gpio;
-	private GpioPinDigitalOutput ledPin;
 	private GpioPinDigitalInput ldrPin;
+	private GpioPinDigitalOutput ledPin;
 	
 	public BrightnessThreshold()
 	{
-		// create gpio controller
+		// create a gpio controller
 		gpio = GpioFactory.getInstance();
+		
+		ldrPin = gpio.provisionDigitalInputPin(RaspiPin.GPIO_07, "myLDR");
 		
 		ledPin = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_08, "myLED", PinState.HIGH);
 		ledPin.setShutdownOptions(true, PinState.LOW);
-		
-		ldrPin = gpio.provisionDigitalInputPin(RaspiPin.GPIO_07, "myLDR");
 	}
 	
-	public void terminate()
+	public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event)
 	{
-		// stop all GPIO activity/threads by shutting down the GPIO controller
-		// (this method will forcefully shutdown all GPIO monitoring threads and scheduled tasks)
-		gpio.shutdown();
+        setLED(isLow());
+    }
+	
+    private boolean isLow()
+	{
+		return ldrPin.getState() == PinState.LOW;
 	}
 	
 	private void setLED(boolean state)
@@ -42,13 +42,15 @@ public class BrightnessThreshold
 		ledPin.setState(state);
 	}
 	
-	private boolean isHigh()
+	public void shutdown()
 	{
-		return ldrPin.getState() == PinState.HIGH;
+		// stop all GPIO activity/threads by shutting down the GPIO controller
+		// (this method will forcefully shutdown all GPIO monitoring threads and scheduled tasks)
+		gpio.shutdown();
 	}
 	
-	public void run()
+	public void start()
 	{
-		setLED(isHigh());
+		ldrPin.addListener(this);
 	}
 }
