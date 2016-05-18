@@ -5,12 +5,12 @@ public class Main
 	public static void main(String[] args) throws InterruptedException
 	{
 		System.out.println("Program started.");
-		BrightnessThreshold test = new BrightnessThreshold();
-		test.start();
+		BrightnessThreshold bthres = new BrightnessThreshold();
 		
 		while (true)
 		{
-			Thread.sleep(500);
+			bthres.run();
+			Thread.sleep(100);
 		}
 //		test.shutdown();
 	}
