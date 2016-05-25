@@ -1,6 +1,10 @@
+package de.uniluebeck.itm.pit;
 
-
-public class Main
+/**
+ * Hello world!
+ *
+ */
+public class App 
 {
 	public static void main(String[] args) throws InterruptedException
 	{
