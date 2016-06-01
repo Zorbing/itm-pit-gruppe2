@@ -25,7 +25,7 @@ public class BrightnessThreshold
 		ledPin.setShutdownOptions(true, PinState.LOW);
 	}
 	
-    private boolean isLow()
+	private boolean isLow()
 	{
 		return ldrPin.getState() == PinState.LOW;
 	}
@@ -35,9 +35,11 @@ public class BrightnessThreshold
 		ledPin.setState(state);
 	}
 	
-	public void run()
+	public boolean run()
 	{
-        setLED(isLow());
+		boolean state = isLow();
+		setLED(state);
+		return state;
 	}
 	
 	public void shutdown()
