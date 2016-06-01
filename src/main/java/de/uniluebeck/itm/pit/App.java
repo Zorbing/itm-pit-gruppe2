@@ -3,11 +3,8 @@ package de.uniluebeck.itm.pit;
 import de.uniluebeck.itm.pit.ncoap.LedObservableWebservice;
 import de.uniluebeck.itm.pit.ncoap.LoggingConfiguration;
 import de.uniluebeck.itm.pit.ncoap.SimpleCoapServer;
+import de.uniluebeck.itm.pit.ncoap.SimpleObservableTimeService;
 
-/**
- * Hello world!
- *
- */
 public class App 
 {
 	public static void main(String[] args) throws Exception
@@ -21,6 +18,9 @@ public class App
 		// register led-webservice
 		LedObservableWebservice ledService = new LedObservableWebservice("/led", server.getExecutor());
 		server.registerService(ledService);
+		// register time service
+		SimpleObservableTimeService timeService = new SimpleObservableTimeService("/utc-time", 1000, server.getExecutor());
+        server.registerService(timeService);
 		// register all webservices at the SSP
 		server.registerAtSSP();
 		
@@ -29,8 +29,9 @@ public class App
 		while (true)
 		{
 			boolean status = bthres.run();
+			System.out.println(String.format("led status set: %b", status));
 			ledService.setResourceStatus(status, intervalMs / 1000);
-			Thread.sleep(100);
+			Thread.sleep(intervalMs);
 		}
 //		test.shutdown();
 	}
