@@ -1,6 +1,9 @@
 package de.uniluebeck.itm.pit.ncoap;
 
 import java.net.InetSocketAddress;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
@@ -26,29 +29,71 @@ public class LedObservableWebservice extends ObservableWebservice<Boolean> {
 	public static long DEFAULT_CONTENT_FORMAT = ContentFormat.TEXT_PLAIN_UTF8;
 	private static Logger log = Logger.getLogger(LedObservableWebservice.class.getName());
 	
-	private static HashMap<Long, String> payloadTemplates = new HashMap<>();
+	public static String groupNr = "02";
+	public static String prefix = "pit: <http://gruppe" + groupNr + ".pit.itm.uni-luebeck.de/>";
+	public static HashMap<Long, String> payloadTemplates = new HashMap<>();
 	static{
 		//Add template for plaintext UTF-8 payload
 		payloadTemplates.put(
-				ContentFormat.TEXT_PLAIN_UTF8,
-				"The LED is currently on: %B"
+			ContentFormat.TEXT_PLAIN_UTF8,
+			"The LED is currently on: %B"
 		);
 
 		//Add template for XML payload
 		payloadTemplates.put(
-				ContentFormat.APP_XML,
-				"<state>%b</time>"
+			ContentFormat.APP_XML,
+			"<state>%b</time>"
 		);
 		
 		//Add template for Turtle payload
 		payloadTemplates.put(
-				ContentFormat.APP_TURTLE,
-				"@prefix itm: <http://gruppe02.pit.itm.uni-luebeck.de/>\n" +
-				"@prefix xsd: <http://www.w3.org/2001/XMLSchema#>\n" +
-				"\n" + 
-				"itm:led itm:state \"%b\"^^xsd:boolean ."
+			ContentFormat.APP_TURTLE,
+			"@prefix " + prefix + "\n" +
+			"@prefix xsd: <http://www.w3.org/2001/XMLSchema#>\n" +
+			"\n" + 
+			"pit:Gruppe" + groupNr + "_Pi rdf:type pit:Hardware .\n" +
+			"pit:Gruppe" + groupNr + "_Pi pit:hasPart pit:Gruppe" + groupNr + "_LDR .\n" +
+			"pit:Gruppe" + groupNr + "_Pi pit:isLocatedIn pit:Room2054 .\n" +
+			"\n" +
+			"pit:Gruppe" + groupNr + "_LDR rdf:type pit:GL5516_LDR .\n" +
+			"pit:Gruppe" + groupNr + "_LDR pit:hasSensor pit:Gruppe" + groupNr + "_LDR_Sensor .\n" +
+			"\n" +
+			"pit:Gruppe" + groupNr + "_LDR_Sensor rdf:type pit:LightSensorBinary .\n" +
+			"pit:Gruppe" + groupNr + "_LDR_Sensor pit:observesPhenomenon pit:Room2054 .\n" +
+			"\n" +
+			"pit:Room2054 rdf:type pit:Phenomenon .\n" +
+			"pit:Room2054 pit:isFeataureOf pit:Building64 .\n" +
+			"\n" +
+			"pit:Gruppe" + groupNr + "_Obs1 rdf:type pit:Observation .\n" +
+			"pit:Gruppe" + groupNr + "_Obs1 pit:isStatusOf pit:Gruppe" + groupNr + "_LDR_Sensor .\n" +
+			"pit:Gruppe" + groupNr + "_Obs1 pit:hasTimeStamp \"%s\"^^xsd:dateTime .\n" +
+			"pit:Gruppe" + groupNr + "_Obs1 pit:hasValue pit:Gruppe" + groupNr + "_Obs1_Value .\n" +
+			"\n" +
+			"pit:Gruppe" + groupNr + "_Obs1_Value rdf:type pit:typeObservationValue .\n" +
+			"pit:Gruppe" + groupNr + "_Obs1_Value pit:hasType pit:Boolean .\n" +
+			"pit:Gruppe" + groupNr + "_Obs1_Value pit:literalValue \"%b\"^^xsd:boolean ."
 		);
-		
+//		pit:GruppeXX_Pi,rdf:type,pit:Hardware,
+//		pit:GruppeXX_Pi,pit:hasPart,pit:GruppeXX_LDR,
+//		pit:GruppeXX_Pi,pit:isLocatedIn,pit:Room2054,
+//		,,,
+//		pit:GruppeXX_LDR,rdf:type,pit:GL5516_LDR,(pit:Hardware)
+//		pit:GruppeXX_LDR,pit:hasSensor,pit:GruppeXX_LDR_Sensor,
+//		,,,
+//		pit:GruppeXX_LDR_Sensor,rdf:type,pit:LightSensorBinary,(pit:lightsensor -> pit:Sensor)
+//		pit:GruppeXX_LDR_Sensor,pit:observesPhenomenon,pit:Room2054,(pit: binaryLight -> pit:booleanProperty)
+//		,,,
+//		pit:Room2054,rdf:type,pit:Phenomenon,
+//		pit:Room2054,pit:isFeataureOf,pit:Building64,
+//		,,,
+//		pit:GruppeXX_Obs1,rdf:type,pit:Observation,
+//		pit:GruppeXX_Obs1,pit:isStatusOf,pit:GruppeXX_LDR_Sensor,
+//		pit:GruppeXX_Obs1,pit:hasTimeStamp,"""2016-06-01T11:00:00""^^xsd:dateTime",
+//		pit:GruppeXX_Obs1,pit:hasValue,pit:GruppeXX_Obs1_Value,
+//		,,,
+//		pit:GruppeXX_Obs1_Value,rdf:type,pit:typeObservationValue,
+//		pit:GruppeXX_Obs1_Value,pit:hasType,pit:Boolean,
+//		pit:GruppeXX_Obs1_Value,pit:literalValue,"""true""^^xsd:boolean",
 	}
 
 	public LedObservableWebservice(String uriPath, ScheduledExecutorService executor) {
@@ -164,6 +209,9 @@ public class LedObservableWebservice extends ObservableWebservice<Boolean> {
 	public byte[] getSerializedResourceStatus(long contentFormat) {
 		log.debug("Try to create payload (content format: " + contentFormat + ")");
 
+//		string 
+		DateFormat dfmt = new SimpleDateFormat("YYYY-MM-dd'T'hh:mm:ss");
+		String timestamp = dfmt.format(new Date());
 		boolean state = getStatus();
 		String template = payloadTemplates.get(contentFormat);
 
@@ -171,6 +219,6 @@ public class LedObservableWebservice extends ObservableWebservice<Boolean> {
 			return null;
 
 		else
-			return String.format(template, state).getBytes(CoapMessage.CHARSET);
+			return String.format(template, timestamp, state).getBytes(CoapMessage.CHARSET);
 	}
 }
