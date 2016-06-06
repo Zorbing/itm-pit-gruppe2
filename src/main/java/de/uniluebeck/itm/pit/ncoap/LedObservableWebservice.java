@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.concurrent.ScheduledExecutorService;
 
 import org.apache.log4j.Logger;
@@ -188,10 +189,10 @@ public class LedObservableWebservice extends ObservableWebservice<Boolean> {
 	
 	public byte[] getSerializedResourceStatus(long contentFormat) {
 		log.debug("Try to create payload (content format: " + contentFormat + ")");
-
-//		string 
-		DateFormat dfmt = new SimpleDateFormat("YYYY-MM-dd'T'hh:mm:ss");
-		String timestamp = dfmt.format(new Date());
+		
+		DateFormat simpleDateFormat = new SimpleDateFormat("YYYY-MM-dd'T'hh:mm:ss");
+		simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+		String timestamp = simpleDateFormat.format(new Date());
 		boolean state = getStatus();
 		String template = payloadTemplates.get(contentFormat);
 
