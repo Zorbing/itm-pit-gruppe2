@@ -9,7 +9,7 @@ public class App
 {
 	public static void main(String[] args) throws Exception
 	{
-		System.out.println("Program started.");
+		System.out.println("Program started v2.");
 		final int intervalMs = 1000;
 		
 		// initialize the simple coap server

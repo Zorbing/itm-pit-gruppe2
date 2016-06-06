@@ -50,6 +50,7 @@ public class LedObservableWebservice extends ObservableWebservice<Boolean> {
 			ContentFormat.APP_TURTLE,
 			"@prefix " + prefix + "\n" +
 			"@prefix xsd: <http://www.w3.org/2001/XMLSchema#>\n" +
+			"@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
 			"\n" + 
 			"pit:Gruppe" + groupNr + "_Pi rdf:type pit:Hardware .\n" +
 			"pit:Gruppe" + groupNr + "_Pi pit:hasPart pit:Gruppe" + groupNr + "_LDR .\n" +
@@ -73,27 +74,6 @@ public class LedObservableWebservice extends ObservableWebservice<Boolean> {
 			"pit:Gruppe" + groupNr + "_Obs1_Value pit:hasType pit:Boolean .\n" +
 			"pit:Gruppe" + groupNr + "_Obs1_Value pit:literalValue \"%b\"^^xsd:boolean ."
 		);
-//		pit:GruppeXX_Pi,rdf:type,pit:Hardware,
-//		pit:GruppeXX_Pi,pit:hasPart,pit:GruppeXX_LDR,
-//		pit:GruppeXX_Pi,pit:isLocatedIn,pit:Room2054,
-//		,,,
-//		pit:GruppeXX_LDR,rdf:type,pit:GL5516_LDR,(pit:Hardware)
-//		pit:GruppeXX_LDR,pit:hasSensor,pit:GruppeXX_LDR_Sensor,
-//		,,,
-//		pit:GruppeXX_LDR_Sensor,rdf:type,pit:LightSensorBinary,(pit:lightsensor -> pit:Sensor)
-//		pit:GruppeXX_LDR_Sensor,pit:observesPhenomenon,pit:Room2054,(pit: binaryLight -> pit:booleanProperty)
-//		,,,
-//		pit:Room2054,rdf:type,pit:Phenomenon,
-//		pit:Room2054,pit:isFeataureOf,pit:Building64,
-//		,,,
-//		pit:GruppeXX_Obs1,rdf:type,pit:Observation,
-//		pit:GruppeXX_Obs1,pit:isStatusOf,pit:GruppeXX_LDR_Sensor,
-//		pit:GruppeXX_Obs1,pit:hasTimeStamp,"""2016-06-01T11:00:00""^^xsd:dateTime",
-//		pit:GruppeXX_Obs1,pit:hasValue,pit:GruppeXX_Obs1_Value,
-//		,,,
-//		pit:GruppeXX_Obs1_Value,rdf:type,pit:typeObservationValue,
-//		pit:GruppeXX_Obs1_Value,pit:hasType,pit:Boolean,
-//		pit:GruppeXX_Obs1_Value,pit:literalValue,"""true""^^xsd:boolean",
 	}
 
 	public LedObservableWebservice(String uriPath, ScheduledExecutorService executor) {
