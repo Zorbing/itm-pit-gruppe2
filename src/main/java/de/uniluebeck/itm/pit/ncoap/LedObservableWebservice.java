@@ -31,7 +31,11 @@ public class LedObservableWebservice extends ObservableWebservice<Boolean> {
 	private static Logger log = Logger.getLogger(LedObservableWebservice.class.getName());
 	
 	public static String groupNr = "02";
-	public static String prefix = "pit: <http://www.itm.uni-luebeck.de/ontologies/pit2016/>";
+	public static String groupPrefix = "pit:G" + groupNr;
+	public static String prefix = "" +
+			"@prefix pit: <http://www.itm.uni-luebeck.de/ontologies/pit2016/>\n" +
+			"@prefix xsd: <http://www.w3.org/2001/XMLSchema#>\n" +
+			"@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n";
 	public static HashMap<Long, String> payloadTemplates = new HashMap<>();
 	static{
 		//Add template for plaintext UTF-8 payload
@@ -49,34 +53,32 @@ public class LedObservableWebservice extends ObservableWebservice<Boolean> {
 		//Add template for Turtle payload
 		payloadTemplates.put(
 			ContentFormat.APP_TURTLE,
-			"@prefix " + prefix + "\n" +
-			"@prefix xsd: <http://www.w3.org/2001/XMLSchema#>\n" +
-			"@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n" +
-			"\n" + 
-			"pit:Gruppe" + groupNr + "_Pi rdf:type pit:Hardware .\n" +
-			"pit:Gruppe" + groupNr + "_Pi pit:hasPart pit:Gruppe" + groupNr + "_LDR .\n" +
-			"pit:Gruppe" + groupNr + "_Pi pit:isLocatedIn pit:Room2054 .\n" +
+			prefix +
 			"\n" +
-			"pit:Gruppe" + groupNr + "_LDR rdf:type pit:GL5516_LDR .\n" +
-			"pit:Gruppe" + groupNr + "_LDR pit:hasSensor pit:Gruppe" + groupNr + "_LDR_Sensor .\n" +
+			groupPrefix + "_Pi rdf:type pit:Hardware .\n" +
+			groupPrefix + "_Pi pit:hasPart " + groupPrefix + "_LDR .\n" +
+			groupPrefix + "_Pi pit:isLocatedIn pit:Room2054 .\n" +
 			"\n" +
-			"pit:Gruppe" + groupNr + "_LDR_Sensor rdf:type pit:LightSensorBinary .\n" +
-			"pit:Gruppe" + groupNr + "_LDR_Sensor pit:observesPhenomenon pit:Room2054 .\n" +
+			groupPrefix + "_LDR rdf:type pit:GL5516_LDR .\n" +
+			groupPrefix + "_LDR pit:hasSensor " + groupPrefix + "_LDR_Sensor .\n" +
+			"\n" +
+			groupPrefix + "_LDR_Sensor rdf:type pit:LightSensorBinary .\n" +
+			groupPrefix + "_LDR_Sensor pit:observesPhenomenon pit:Room2054 .\n" +
 			"\n" +
 //			"pit:Room2054 rdf:type pit:Phenomenon .\n" +
 //			"pit:Room2054 pit:isFeataureOf pit:Building64 .\n" +
 //			"\n" +
-			"pit:Gruppe" + groupNr + "_Obs1 rdf:type pit:Observation .\n" +
-			"pit:Gruppe" + groupNr + "_Obs1 pit:isStatusOf pit:Gruppe" + groupNr + "_LDR_Sensor .\n" +
-			"pit:Gruppe" + groupNr + "_Obs1 pit:hasTimeStamp \"%s\"^^xsd:dateTime .\n" +
-			"pit:Gruppe" + groupNr + "_Obs1 pit:hasValue pit:Gruppe" + groupNr + "_Obs1_Value .\n" +
+			groupPrefix + "_Obs1 rdf:type pit:Observation .\n" +
+			groupPrefix + "_Obs1 pit:isStatusOf " + groupPrefix + "_LDR_Sensor .\n" +
+			groupPrefix + "_Obs1 pit:hasTimeStamp \"%s\"^^xsd:dateTime .\n" +
+			groupPrefix + "_Obs1 pit:hasValue " + groupPrefix + "_Obs1_Value .\n" +
 			"\n" +
-			"pit:Gruppe" + groupNr + "_Obs1_Value rdf:type pit:typeObservationValue .\n" +
-			"pit:Gruppe" + groupNr + "_Obs1_Value pit:hasType pit:Boolean .\n" +
-			"pit:Gruppe" + groupNr + "_Obs1_Value pit:literalValue \"%b\"^^xsd:boolean ."
+			groupPrefix + "_Obs1_Value rdf:type pit:typeObservationValue .\n" +
+			groupPrefix + "_Obs1_Value pit:hasType pit:Boolean .\n" +
+			groupPrefix + "_Obs1_Value pit:literalValue \"%b\"^^xsd:boolean ."
 		);
 	}
-
+	
 	public LedObservableWebservice(String uriPath, ScheduledExecutorService executor) {
 		super(uriPath, false, executor);
 		
