@@ -32,6 +32,7 @@ public class LedObservableWebservice extends ObservableWebservice<Boolean> {
 	
 	public static String groupNr = "02";
 	public static String prefix = "pit: <http://gruppe" + groupNr + ".pit.itm.uni-luebeck.de/>";
+//	public static String prefix = "pit: <http://www.itm.uni-luebeck.de/ontologies/pit2016/>";
 	public static HashMap<Long, String> payloadTemplates = new HashMap<>();
 	static{
 		//Add template for plaintext UTF-8 payload
