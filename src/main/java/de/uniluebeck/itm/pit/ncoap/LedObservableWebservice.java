@@ -31,8 +31,7 @@ public class LedObservableWebservice extends ObservableWebservice<Boolean> {
 	private static Logger log = Logger.getLogger(LedObservableWebservice.class.getName());
 	
 	public static String groupNr = "02";
-	public static String prefix = "pit: <http://gruppe" + groupNr + ".pit.itm.uni-luebeck.de/>";
-//	public static String prefix = "pit: <http://www.itm.uni-luebeck.de/ontologies/pit2016/>";
+	public static String prefix = "pit: <http://www.itm.uni-luebeck.de/ontologies/pit2016/>";
 	public static HashMap<Long, String> payloadTemplates = new HashMap<>();
 	static{
 		//Add template for plaintext UTF-8 payload
@@ -64,9 +63,9 @@ public class LedObservableWebservice extends ObservableWebservice<Boolean> {
 			"pit:Gruppe" + groupNr + "_LDR_Sensor rdf:type pit:LightSensorBinary .\n" +
 			"pit:Gruppe" + groupNr + "_LDR_Sensor pit:observesPhenomenon pit:Room2054 .\n" +
 			"\n" +
-			"pit:Room2054 rdf:type pit:Phenomenon .\n" +
-			"pit:Room2054 pit:isFeataureOf pit:Building64 .\n" +
-			"\n" +
+//			"pit:Room2054 rdf:type pit:Phenomenon .\n" +
+//			"pit:Room2054 pit:isFeataureOf pit:Building64 .\n" +
+//			"\n" +
 			"pit:Gruppe" + groupNr + "_Obs1 rdf:type pit:Observation .\n" +
 			"pit:Gruppe" + groupNr + "_Obs1 pit:isStatusOf pit:Gruppe" + groupNr + "_LDR_Sensor .\n" +
 			"pit:Gruppe" + groupNr + "_Obs1 pit:hasTimeStamp \"%s\"^^xsd:dateTime .\n" +
