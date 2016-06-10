@@ -30,14 +30,6 @@ public class App implements GpioPinListenerDigital
 		this.handleGpioPinDigitalStateChangeEvent(null);
 	}
 	
-	@Override
-	public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event)
-	{
-		boolean status = brightnessThreshold.run();
-		System.out.println(String.format("led status set: %b", status));
-		ledService.setResourceStatus(!status, lifeTime);
-	}
-	
 	public static void main(String[] args) throws Exception
 	{
 		System.out.println("Program started v3.");
@@ -48,5 +40,13 @@ public class App implements GpioPinListenerDigital
 		{
 			Thread.sleep(500);
 		}
+	}
+	
+	@Override
+	public void handleGpioPinDigitalStateChangeEvent(GpioPinDigitalStateChangeEvent event)
+	{
+		boolean status = brightnessThreshold.process();
+		System.out.println(String.format("led status set: %b", status));
+		ledService.setResourceStatus(!status, lifeTime);
 	}
 }

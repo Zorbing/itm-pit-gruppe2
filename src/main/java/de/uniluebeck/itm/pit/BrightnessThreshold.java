@@ -8,7 +8,6 @@ import com.pi4j.io.gpio.PinState;
 import com.pi4j.io.gpio.RaspiPin;
 import com.pi4j.io.gpio.event.GpioPinListenerDigital;
 
-
 public class BrightnessThreshold
 {
 	private GpioController gpio;
@@ -27,17 +26,7 @@ public class BrightnessThreshold
 		ledPin.setShutdownOptions(true, PinState.LOW);
 	}
 	
-	private boolean isLow()
-	{
-		return ldrPin.getState() == PinState.LOW;
-	}
-	
-	private void setLED(boolean state)
-	{
-		ledPin.setState(state);
-	}
-	
-	public boolean run()
+	public boolean process()
 	{
 		boolean state = isLow();
 		setLED(state);
@@ -47,7 +36,18 @@ public class BrightnessThreshold
 	public void shutdown()
 	{
 		// stop all GPIO activity/threads by shutting down the GPIO controller
-		// (this method will forcefully shutdown all GPIO monitoring threads and scheduled tasks)
+		// (this method will forcefully shutdown all GPIO monitoring threads and
+		// scheduled tasks)
 		gpio.shutdown();
+	}
+	
+	private boolean isLow()
+	{
+		return ldrPin.getState() == PinState.LOW;
+	}
+	
+	private void setLED(boolean state)
+	{
+		ledPin.setState(state);
 	}
 }

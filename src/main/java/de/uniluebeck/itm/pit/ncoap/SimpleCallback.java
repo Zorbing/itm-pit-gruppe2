@@ -36,58 +36,63 @@ import de.uniluebeck.itm.ncoap.message.CoapResponse;
 /**
  * Created by olli on 20.03.14.
  */
-public class SimpleCallback extends ClientCallback {
-
+public class SimpleCallback extends ClientCallback
+{
+	
 	private Logger log = LoggerFactory.getLogger(this.getClass().getName());
-
-	//private AtomicInteger responseCounter;
+	
+	// private AtomicInteger responseCounter;
 	private AtomicBoolean responseReceived;
 	private AtomicInteger transmissionCounter;
 	private AtomicBoolean timedOut;
-
-
-	public SimpleCallback(){
+	
+	public SimpleCallback()
+	{
 		this.responseReceived = new AtomicBoolean(false);
 		this.transmissionCounter = new AtomicInteger(0);
 		this.timedOut = new AtomicBoolean(false);
 	}
-
+	
 	/**
-	 * Increases the reponse counter by 1, i.e. {@link #getResponseCount()} will return a higher value after
-	 * invocation of this method.
+	 * Increases the reponse counter by 1, i.e. {@link #getResponseCount()} will
+	 * return a higher value after invocation of this method.
 	 *
-	 * @param coapResponse the response message
+	 * @param coapResponse
+	 *            the response message
 	 */
 	@Override
-	public void processCoapResponse(CoapResponse coapResponse) {
+	public void processCoapResponse(CoapResponse coapResponse)
+	{
 		responseReceived.set(true);
 		log.info("Received: {}", coapResponse);
 	}
-
+	
 	/**
 	 * Returns the number of responses received
+	 * 
 	 * @return the number of responses received
 	 */
-	public int getResponseCount(){
+	public int getResponseCount()
+	{
 		return this.responseReceived.get() ? 1 : 0;
 	}
-
-
+	
 	@Override
-	public void processRetransmission() {
+	public void processRetransmission()
+	{
 		int value = transmissionCounter.incrementAndGet();
 		log.info("Retransmission #{}", value);
 	}
-
-
+	
 	@Override
-	public void processTransmissionTimeout() {
+	public void processTransmissionTimeout()
+	{
 		log.info("Transmission timed out...");
 		timedOut.set(true);
 	}
-
-
-	public boolean isTimedOut(){
+	
+	public boolean isTimedOut()
+	{
 		return timedOut.get();
 	}
 }
