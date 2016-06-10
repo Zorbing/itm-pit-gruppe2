@@ -10,8 +10,22 @@ import de.uniluebeck.itm.pit.ncoap.SimpleCoapServer;
 public class App implements GpioPinListenerDigital
 {
 	private static final int lifeTime = 60 * 60 * 24 * 365;
+	
+	public static void main(String[] args) throws Exception
+	{
+		System.out.println("Program started v3.");
+		
+		new App();
+		
+		while (true)
+		{
+			Thread.sleep(500);
+		}
+	}
+	
 	private BrightnessThreshold brightnessThreshold;
 	private LedObservableWebservice ledService;
+	
 	private SimpleCoapServer server;
 	
 	public App() throws Exception
@@ -28,18 +42,6 @@ public class App implements GpioPinListenerDigital
 		
 		brightnessThreshold = new BrightnessThreshold(this);
 		this.handleGpioPinDigitalStateChangeEvent(null);
-	}
-	
-	public static void main(String[] args) throws Exception
-	{
-		System.out.println("Program started v3.");
-		
-		new App();
-		
-		while (true)
-		{
-			Thread.sleep(500);
-		}
 	}
 	
 	@Override

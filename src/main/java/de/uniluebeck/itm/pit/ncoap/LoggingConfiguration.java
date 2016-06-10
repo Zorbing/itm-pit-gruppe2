@@ -52,7 +52,9 @@ public abstract class LoggingConfiguration
 	{
 		
 		if (configureLogging(new File(path)))
+		{
 			return;
+		}
 		
 		configureDefaultLogging();
 		
