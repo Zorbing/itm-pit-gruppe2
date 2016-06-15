@@ -37,27 +37,30 @@ import de.uniluebeck.itm.ncoap.message.MessageType;
 /**
  * Created by olli on 30.03.14.
  */
-public class SimpleCoapServer extends CoapServerApplication {
-
+public class SimpleCoapServer extends CoapServerApplication
+{
+	
 	// Main SSP at the ITM with default port
 	private static String SSP_HOST = "141.83.151.196";
 	private static int SSP_PORT = CoapServerApplication.DEFAULT_COAP_SERVER_PORT;
 	
 	// Local SSP with port 22222
-	//private static String SSP_HOST = "127.0.0.1";
-	//private static int SSP_PORT = 22222;
+	// private static String SSP_HOST = "127.0.0.1";
+	// private static int SSP_PORT = 22222;
 	
 	/**
-	 * This method calls the resource /registry at the SSP to initiate the observation
+	 * This method calls the resource /registry at the SSP to initiate the
+	 * observation
 	 * 
 	 * @throws URISyntaxException
 	 */
-	public void registerAtSSP() throws URISyntaxException {
+	public void registerAtSSP() throws URISyntaxException
+	{
 		URI webserviceURI = new URI("coap://" + SSP_HOST + ":" + SSP_PORT + "/registry");
 		CoapRequest coapRequest = new CoapRequest(MessageType.Name.CON, MessageCode.Name.POST, webserviceURI, false);
 		SimpleCallback responseProcessor = new SimpleCallback();
 		InetSocketAddress recipient = new InetSocketAddress(SSP_HOST, SSP_PORT);
 		CoapClientApplication c = new CoapClientApplication();
-		c.sendCoapRequest(coapRequest, responseProcessor, recipient);		
+		c.sendCoapRequest(coapRequest, responseProcessor, recipient);
 	}
 }

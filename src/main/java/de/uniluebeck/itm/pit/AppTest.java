@@ -2,7 +2,6 @@ package de.uniluebeck.itm.pit;
 
 import java.net.URL;
 
-import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
