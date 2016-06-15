@@ -27,7 +27,7 @@ public abstract class AbstractObservableWebservice<T> extends ObservableWebservi
 	protected static String groupPrefix = "pit:G" + groupNr;
 	protected static Logger log = Logger.getLogger(LedObservableWebservice.class.getName());
 	protected static String sparqlPrefix = "" +
-		"@prefix pit: <http://www.itm.uni-luebeck.de/ontologies/pit2016/>\n" +
+		"@prefix pit: <http://www.itm.uni-luebeck.de/ontologies/pit2016#>\n" +
 		"@prefix xsd: <http://www.w3.org/2001/XMLSchema#>\n" +
 		"@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\n";
 	
