@@ -27,7 +27,6 @@ public class AppRFIDTest implements EventListener
 	@Override
 	public void handleEvent(Event event)
 	{
-		System.out.println("event got!");
 		CardEvent evt = (CardEvent) event;
 		if (evt.getType().equals(Rfid.CARD_DETECTED))
 		{

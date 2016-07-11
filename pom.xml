@@ -58,7 +58,7 @@
 								<transformer
 									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
 									<manifestEntries>
-										<Main-Class>de.uniluebeck.itm.pit.AppRFIDTest</Main-Class>
+										<Main-Class>de.uniluebeck.itm.pit.AppAudioTest</Main-Class>
 										<Build-Number>1</Build-Number>
 									</manifestEntries>
 								</transformer>
