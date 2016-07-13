@@ -5,12 +5,12 @@ import java.util.Observer;
 
 import de.uniluebeck.itm.pit.hardware.Rfid;
 
-public class AppRFIDTest implements Observer
+public class AppRfidTest implements Observer
 {
 	public static void main(String[] args) throws Exception
 	{
 		Rfid rfid = new Rfid();
-		Observer observer = new AppRFIDTest();
+		Observer observer = new AppRfidTest();
 		rfid.addObserver(observer);
 	}
 

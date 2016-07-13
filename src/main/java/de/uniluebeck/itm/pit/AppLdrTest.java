@@ -7,14 +7,14 @@ import java.util.Observer;
 import de.uniluebeck.itm.pit.ncoap.LedObservableWebservice;
 import de.uniluebeck.itm.pit.ncoap.SimpleCoapServer;
 
-public class App implements Observer
+public class AppLdrTest implements Observer
 {
 	private static final int lifeTime = 60 * 60 * 24 * 365;
 	
 	private LedObservableWebservice ledService;
 	private SimpleCoapServer server;
 	
-	public App() throws URISyntaxException
+	public AppLdrTest() throws URISyntaxException
 	{
 		// create coap server
 		server = new SimpleCoapServer();
@@ -32,7 +32,7 @@ public class App implements Observer
 		System.out.println("Program started v3.");
 		
 		BrightnessDetector detector = new BrightnessDetector();
-		Observer observer = new App();
+		Observer observer = new AppLdrTest();
 		detector.addObserver(observer);
 		
 		while (true)
