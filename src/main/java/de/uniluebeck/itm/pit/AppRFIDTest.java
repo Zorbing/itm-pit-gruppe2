@@ -1,44 +1,30 @@
 package de.uniluebeck.itm.pit;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.Observable;
+import java.util.Observer;
 
-import org.w3c.dom.events.Event;
-import org.w3c.dom.events.EventListener;
-
-import de.uniluebeck.itm.pit.hardware.CardEvent;
 import de.uniluebeck.itm.pit.hardware.Rfid;
 
-public class AppRFIDTest implements EventListener
+public class AppRFIDTest implements Observer
 {
 	public static void main(String[] args) throws Exception
 	{
-		ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-		
 		Rfid rfid = new Rfid();
-		EventListener listener = new AppRFIDTest();
-		rfid.addEventListener(Rfid.CARD_DETECTED, listener, false);
-		rfid.addEventListener(Rfid.CARD_REMOVED, listener, false);
-		
-		executor.scheduleAtFixedRate(rfid, 0, 200, TimeUnit.MILLISECONDS);
+		Observer observer = new AppRFIDTest();
+		rfid.addObserver(observer);
 	}
 
 	@Override
-	public void handleEvent(Event event)
+	public void update(Observable rfid, Object arg)
 	{
-		CardEvent evt = (CardEvent) event;
-		if (evt.getType().equals(Rfid.CARD_DETECTED))
+		String uid = ((Rfid) rfid).getCurrentUID();
+		if (uid != null)
 		{
-			System.out.println("Card Read UID: " + ((Rfid)evt.getTarget()).getCurrentUID());
-		}
-		else if (evt.getType().equals(Rfid.CARD_REMOVED))
-		{
-			System.out.println("Card removed");
+			System.out.println("Card Read UID: " + uid);
 		}
 		else
 		{
-			System.err.println("unknown event type '" + evt.getType() + "'");
+			System.out.println("Card removed");
 		}
 	}
 }
