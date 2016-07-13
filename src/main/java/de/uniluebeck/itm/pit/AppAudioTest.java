@@ -8,7 +8,7 @@ public class AppAudioTest
 	{
 		System.out.println("Test program started: audio");
 		
-//		SoundPassThrough.testAudio();
+//		AudioPassThrough.testAudio();
 		AudioPassThrough audio = new AudioPassThrough();
 		audio.setEnabled(true);
 		audio.start();

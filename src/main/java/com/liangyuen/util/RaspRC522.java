@@ -150,7 +150,8 @@ public class RaspRC522
 	public void RC522_Init() throws Exception
 	{
 		// Enable wiringPi pin schema
-		Gpio.wiringPiSetup();
+//		Gpio.wiringPiSetup();
+		Gpio.wiringPiSetupSys();
 		int fd = Spi.wiringPiSPISetup(SPI_Channel, speed);
 		if (fd <= -1)
 		{
