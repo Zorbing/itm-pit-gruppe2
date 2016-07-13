@@ -8,6 +8,7 @@ import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
+import javax.sound.sampled.Line;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
@@ -20,7 +21,7 @@ public class AudioPassThrough extends Thread
 	
 	private boolean enabled = false;
 	private TargetDataLine microphone;
-	private SourceDataLine speakers;
+	private SourceDataLine speaker;
 	
 	public AudioPassThrough() throws LineUnavailableException
 	{
@@ -29,11 +30,13 @@ public class AudioPassThrough extends Thread
 		DataLine.Info dataLineInfo = new DataLine.Info(SourceDataLine.class, format);
 		DataLine.Info microphoneInfo = new DataLine.Info(TargetDataLine.class, format);
 		
-		speakers = (SourceDataLine) AudioSystem.getLine(dataLineInfo);
-		speakers.open(format);
+		speaker = (SourceDataLine) AudioSystem.getLine(dataLineInfo);
+		speaker.open(format);
 		
 		microphone = (TargetDataLine) AudioSystem.getLine(microphoneInfo);
 		microphone.open(format);
+		
+		printDebugInformation();
 	}
 	
 	public static void testAudio() throws Exception
@@ -54,36 +57,48 @@ public class AudioPassThrough extends Thread
 		while (clip.isRunning());
 	}
 	
-	public void disable()
+	public void setEnabled(boolean enabled)
 	{
-		enabled = false;
-	}
-	
-	public void enable()
-	{
-		enabled = true;
+		this.enabled = enabled;
 	}
 	
 	@Override
 	public void run()
 	{
 		int numBytesRead;
-		System.out.println(microphone.getBufferSize() / 5);
+		System.out.println("buffer size: " + microphone.getBufferSize() / 5);
 		byte[] data = new byte[microphone.getBufferSize() / 5];
 		
 		microphone.start();
-		speakers.start();
+		speaker.start();
 		do
 		{
 			numBytesRead = microphone.read(data, 0, CHUNK_SIZE);
 			// write mic data to stream for immediate playback
 			if (enabled)
 			{
-				speakers.write(data, 0, numBytesRead);
+				speaker.write(data, 0, numBytesRead);
 			}
 		}
 		while (numBytesRead > 0);
-		speakers.close();
+		speaker.close();
 		microphone.close();
+	}
+	
+	private void printDebugInformation()
+	{
+		System.out.format("\nSpeaker Info! class: %s\n", speaker.getClass().getName());
+		AudioFormat sFormat = speaker.getFormat();
+		Line.Info sInfo = speaker.getLineInfo();
+		System.out.format("encoding: %s; channels: %d; sample rate: %f; sample size: %d; frame rate: %f; frame size: %d\n", sFormat.getEncoding(), sFormat.getChannels(), sFormat.getSampleRate(), sFormat.getSampleSizeInBits(), sFormat.getFrameRate(), sFormat.getFrameSize());
+		System.out.format("level: %f\n", speaker.getLevel());
+		System.out.format("class name: %s; to string: %s\n", sInfo.getLineClass().getName(), sInfo.toString());
+		
+		System.out.format("\nMicrophone Info! class: %s\n", microphone.getClass().getName());
+		AudioFormat mFormat = microphone.getFormat();
+		Line.Info mInfo = microphone.getLineInfo();
+		System.out.format("encoding: %s; channels: %d; sample rate: %f; sample size: %d; frame rate: %f; frame size: %d\n", mFormat.getEncoding(), mFormat.getChannels(), mFormat.getSampleRate(), mFormat.getSampleSizeInBits(), mFormat.getFrameRate(), mFormat.getFrameSize());
+		System.out.format("level: %f\n", microphone.getLevel());
+		System.out.format("class name: %s; to string: %s\n\n", mInfo.getLineClass().getName(), mInfo.toString());
 	}
 }

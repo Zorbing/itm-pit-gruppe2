@@ -3,8 +3,8 @@ package de.uniluebeck.itm.pit;
 import java.util.Observable;
 import java.util.Observer;
 
-import de.uniluebeck.itm.pit.hardware.Rfid;
 import de.uniluebeck.itm.pit.hardware.AudioPassThrough;
+import de.uniluebeck.itm.pit.hardware.Rfid;
 
 public class App implements Observer
 {
@@ -25,7 +25,7 @@ public class App implements Observer
 		Rfid rfid = new Rfid();
 		rfid.addObserver(app);
 	}
-
+	
 	@Override
 	public void update(Observable rfid, Object arg)
 	{
@@ -36,13 +36,12 @@ public class App implements Observer
 			if (enteredUid == null)
 			{
 				enteredUid = uid;
-				audio.enable();
 			}
 			else if (enteredUid == uid)
 			{
 				enteredUid = null;
-				audio.disable();
 			}
+			audio.setEnabled(enteredUid != null);
 		}
 		else
 		{

@@ -9,11 +9,13 @@ public class AppRfidTest implements Observer
 {
 	public static void main(String[] args) throws Exception
 	{
+		System.out.println("Test program started: RFID");
+		
 		Rfid rfid = new Rfid();
 		Observer observer = new AppRfidTest();
 		rfid.addObserver(observer);
 	}
-
+	
 	@Override
 	public void update(Observable rfid, Object arg)
 	{

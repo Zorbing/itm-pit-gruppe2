@@ -6,11 +6,11 @@ public class AppAudioTest
 {
 	public static void main(String[] args) throws Exception
 	{
-		System.out.println("Test-Program started.");
+		System.out.println("Test program started: audio");
 		
 //		SoundPassThrough.testAudio();
-		AudioPassThrough sound = new AudioPassThrough();
-		sound.enable();
-		sound.start();
+		AudioPassThrough audio = new AudioPassThrough();
+		audio.setEnabled(true);
+		audio.start();
 	}
 }
