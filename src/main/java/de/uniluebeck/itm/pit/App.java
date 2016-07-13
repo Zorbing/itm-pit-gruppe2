@@ -37,7 +37,7 @@ public class App implements Observer
 			{
 				enteredUid = uid;
 			}
-			else if (enteredUid == uid)
+			else if (enteredUid.equals(uid))
 			{
 				enteredUid = null;
 			}
