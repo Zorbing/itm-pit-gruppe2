@@ -17,7 +17,7 @@ import de.uniluebeck.itm.pit.AppAudioTest;
 
 public class AudioPassThrough extends Thread
 {
-	private static final int CHUNK_SIZE = 1024;
+	private static final int CHUNK_SIZE = 64;
 	
 	private boolean enabled = false;
 	private TargetDataLine microphone;
