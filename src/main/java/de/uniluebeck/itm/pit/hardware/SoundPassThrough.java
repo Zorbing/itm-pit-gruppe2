@@ -18,8 +18,9 @@ public class SoundPassThrough extends Thread
 {
 	private static final int CHUNK_SIZE = 1024;
 	
-	private SourceDataLine speakers;
+	private boolean enabled = false;
 	private TargetDataLine microphone;
+	private SourceDataLine speakers;
 	
 	public SoundPassThrough() throws LineUnavailableException
 	{
@@ -53,6 +54,16 @@ public class SoundPassThrough extends Thread
 		while (clip.isRunning());
 	}
 	
+	public void disable()
+	{
+		enabled = false;
+	}
+	
+	public void enable()
+	{
+		enabled = true;
+	}
+	
 	@Override
 	public void run()
 	{
@@ -66,7 +77,10 @@ public class SoundPassThrough extends Thread
 		{
 			numBytesRead = microphone.read(data, 0, CHUNK_SIZE);
 			// write mic data to stream for immediate playback
-			speakers.write(data, 0, numBytesRead);
+			if (enabled)
+			{
+				speakers.write(data, 0, numBytesRead);
+			}
 		}
 		while (numBytesRead > 0);
 		speakers.close();

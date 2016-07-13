@@ -10,6 +10,7 @@ public class AppAudioTest
 		
 //		SoundPassThrough.testAudio();
 		SoundPassThrough sound = new SoundPassThrough();
+		sound.enable();
 		sound.start();
 	}
 }
