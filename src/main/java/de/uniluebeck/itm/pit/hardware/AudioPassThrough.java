@@ -14,7 +14,7 @@ import javax.sound.sampled.TargetDataLine;
 
 import de.uniluebeck.itm.pit.AppAudioTest;
 
-public class SoundPassThrough extends Thread
+public class AudioPassThrough extends Thread
 {
 	private static final int CHUNK_SIZE = 1024;
 	
@@ -22,7 +22,7 @@ public class SoundPassThrough extends Thread
 	private TargetDataLine microphone;
 	private SourceDataLine speakers;
 	
-	public SoundPassThrough() throws LineUnavailableException
+	public AudioPassThrough() throws LineUnavailableException
 	{
 		AudioFormat format = new AudioFormat(Encoding.PCM_SIGNED, 44100, 16, 1, 2, 44100, false);
 		

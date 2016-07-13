@@ -4,17 +4,17 @@ import java.util.Observable;
 import java.util.Observer;
 
 import de.uniluebeck.itm.pit.hardware.Rfid;
-import de.uniluebeck.itm.pit.hardware.SoundPassThrough;
+import de.uniluebeck.itm.pit.hardware.AudioPassThrough;
 
 public class App implements Observer
 {
+	private AudioPassThrough audio;
 	private String enteredUid = null;
-	private SoundPassThrough sound;
 	
 	public App() throws Exception
 	{
-		sound = new SoundPassThrough();
-		sound.start();
+		audio = new AudioPassThrough();
+		audio.start();
 	}
 	
 	public static void main(String[] args) throws Exception
@@ -36,12 +36,12 @@ public class App implements Observer
 			if (enteredUid == null)
 			{
 				enteredUid = uid;
-				sound.enable();
+				audio.enable();
 			}
 			else if (enteredUid == uid)
 			{
 				enteredUid = null;
-				sound.disable();
+				audio.disable();
 			}
 		}
 		else

@@ -1,6 +1,6 @@
 package de.uniluebeck.itm.pit;
 
-import de.uniluebeck.itm.pit.hardware.SoundPassThrough;
+import de.uniluebeck.itm.pit.hardware.AudioPassThrough;
 
 public class AppAudioTest
 {
@@ -9,7 +9,7 @@ public class AppAudioTest
 		System.out.println("Test-Program started.");
 		
 //		SoundPassThrough.testAudio();
-		SoundPassThrough sound = new SoundPassThrough();
+		AudioPassThrough sound = new AudioPassThrough();
 		sound.enable();
 		sound.start();
 	}
