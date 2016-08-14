@@ -34,30 +34,30 @@ public class LedObservableWebservice extends AbstractObservableWebservice<Boolea
 		// Add template for Turtle payload
 		payloadTemplates.put(
 			ContentFormat.APP_TURTLE,
-			sparqlPrefix +
+			Prefix.sparql+
 				"\n" +
-				groupPrefix + "_Pi rdf:type pit:Hardware .\n" +
-				groupPrefix + "_Pi pit:hasPart " + groupPrefix + "_LDR .\n" +
-				groupPrefix + "_Pi pit:isLocatedIn pit:Room2054 .\n" +
+				Prefix.group + "_Pi rdf:type pit:Hardware .\n" +
+				Prefix.group + "_Pi pit:hasPart " + Prefix.group + "_LDR .\n" +
+				Prefix.group + "_Pi pit:isLocatedIn pit:Room2054 .\n" +
 				"\n" +
-				groupPrefix + "_LDR rdf:type pit:GL5516_LDR .\n" +
-				groupPrefix + "_LDR pit:hasSensor " + groupPrefix + "_LDR_Sensor .\n" +
+				Prefix.group + "_LDR rdf:type pit:GL5516-LDR .\n" +
+				Prefix.group + "_LDR pit:hasSensor " + Prefix.group + "_LDR_Sensor .\n" +
 				"\n" +
-				groupPrefix + "_LDR_Sensor rdf:type pit:LightSensorBinary .\n" +
-				groupPrefix + "_LDR_Sensor pit:observesPhenomenon pit:Room2054 .\n" +
+				Prefix.group + "_LDR_Sensor rdf:type pit:LightSensorBinary .\n" +
+				Prefix.group + "_LDR_Sensor pit:observesPhenomenon pit:Room2054 .\n" +
 				"\n" +
 				// static information which will be provided by the SSP
 				// "pit:Room2054 rdf:type pit:Phenomenon .\n" +
-				// "pit:Room2054 pit:isFeataureOf pit:Building64 .\n" +
+				// "pit:Room2054 pit:isFeatureOf pit:Building64 .\n" +
 				// "\n" +
-				groupPrefix + "_Obs1 rdf:type pit:Observation .\n" +
-				groupPrefix + "_Obs1 pit:isStatusOf " + groupPrefix + "_LDR_Sensor .\n" +
-				groupPrefix + "_Obs1 pit:hasTimeStamp \"%s\"^^xsd:dateTime .\n" +
-				groupPrefix + "_Obs1 pit:hasValue " + groupPrefix + "_Obs1_Value .\n" +
+				Prefix.group + "_Obs1 rdf:type pit:Observation .\n" +
+				Prefix.group + "_Obs1 pit:isStatusOf " + Prefix.group + "_LDR_Sensor .\n" +
+				Prefix.group + "_Obs1 pit:hasTimestamp \"%s\"^^xsd:dateTime .\n" +
+				Prefix.group + "_Obs1 pit:hasValue " + Prefix.group + "_Obs1_Value .\n" +
 				"\n" +
-				groupPrefix + "_Obs1_Value rdf:type pit:typeObservationValue .\n" +
-				groupPrefix + "_Obs1_Value pit:hasType pit:Boolean .\n" +
-				groupPrefix + "_Obs1_Value pit:literalValue \"%b\"^^xsd:boolean .");
+				Prefix.group + "_Obs1_Value rdf:type pit:TypeObservationValue .\n" +
+				Prefix.group + "_Obs1_Value pit:hasType pit:Boolean .\n" +
+				Prefix.group + "_Obs1_Value pit:literalValue \"%b\"^^xsd:boolean .");
 	}
 	
 	public LedObservableWebservice(String uriPath, ScheduledExecutorService executor)
