@@ -26,7 +26,10 @@ public class LedObservableWebservice extends AbstractObservableWebservice<Boolea
 		// Add template for XML payload
 		payloadTemplates.put(
 			ContentFormat.APP_XML,
-			"<state>%b</time>");
+			"<ledState>\n" +
+				"<time>%s</time>\n" +
+				"<state>%b</state>\n" +
+				"</ledState>");
 		
 		// Add template for Turtle payload
 		payloadTemplates.put(
