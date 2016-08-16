@@ -43,6 +43,9 @@ public class RfidWebservice extends AbstractObservableWebservice<String>
 				Prefix.group + "_Pi pit:hasPart " + Prefix.group + "_RFID .\n" +
 				Prefix.group + "_Pi pit:isLocatedIn pit:Room2054 .\n" +
 				"\n" +
+				Prefix.group + "_RFID rdf:type pit:Hardware .\n" +
+				Prefix.group + "_RFID pit:hasSensor " + Prefix.group + "_RFID_Sensor .\n" +
+				"\n" +
 				Prefix.group + "_RFID_Sensor rdf:type pit:RFIDSensor .\n" +
 				Prefix.group + "_RFID_Sensor pit:observesPhenomenon pit:Room2054 .\n" +
 				"\n" +
