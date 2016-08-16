@@ -12,7 +12,7 @@ import de.uniluebeck.itm.pit.ncoap.SimpleCoapServer;
 
 public class App implements Observer
 {
-	private static final int lifeTime = 60 * 10;
+	private static final int lifetime = 60 * 10;
 	
 	private AudioPassThrough audio;
 	private String enteredUid = null;
@@ -26,8 +26,8 @@ public class App implements Observer
 		
 		// create coap server
 		server = new SimpleCoapServer();
-		// create web service for led state
-		rfidService = new RfidWebservice("/led", server.getExecutor());
+		// create web service for rfid-uid
+		rfidService = new RfidWebservice("/rfid", server.getExecutor());
 		
 		audio = new AudioPassThrough();
 		audio.start();
@@ -70,7 +70,7 @@ public class App implements Observer
 			audio.setEnabled(enteredUid != null);
 			
 			// update last read card id in SSP
-			rfidService.setResourceStatus(uid, lifeTime);
+			rfidService.setResourceStatus(uid, lifetime);
 		}
 		else
 		{

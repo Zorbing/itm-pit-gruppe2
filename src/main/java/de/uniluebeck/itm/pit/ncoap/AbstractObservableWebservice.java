@@ -149,6 +149,5 @@ public abstract class AbstractObservableWebservice<T> extends ObservableWebservi
 		
 		// Set the response future with the previously generated CoAP response
 		responseFuture.set(coapResponse);
-		
 	}
 }

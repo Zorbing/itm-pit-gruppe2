@@ -24,12 +24,15 @@ public class RfidWebservice extends AbstractObservableWebservice<String>
 		// Add template for plaintext UTF-8 payload
 		payloadTemplates.put(
 			ContentFormat.TEXT_PLAIN_UTF8,
-			"The LED is currently on: %B");
+			"The last read UID (%s) is: %s");
 		
 		// Add template for XML payload
 		payloadTemplates.put(
 			ContentFormat.APP_XML,
-			"<state>%b</time>");
+			"<rfid>\n" +
+					"<time>%s</time>\n" +
+					"<uid>%s</uid>\n" +
+					"</rfid>");
 		
 		// Add template for Turtle payload
 		payloadTemplates.put(

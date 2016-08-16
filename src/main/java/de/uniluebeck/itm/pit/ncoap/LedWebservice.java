@@ -21,7 +21,7 @@ public class LedWebservice extends AbstractObservableWebservice<Boolean>
 		// Add template for plaintext UTF-8 payload
 		payloadTemplates.put(
 			ContentFormat.TEXT_PLAIN_UTF8,
-			"The LED is currently on: %B");
+			"The LED is currently (%s) on: %b");
 		
 		// Add template for XML payload
 		payloadTemplates.put(
