@@ -1,11 +1,7 @@
 package de.uniluebeck.itm.pit.ncoap;
 
 import java.net.InetSocketAddress;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.TimeZone;
 import java.util.concurrent.ScheduledExecutorService;
 
 import com.google.common.primitives.Ints;
@@ -81,9 +77,7 @@ public class AudioPassThroughWebservice extends AbstractObservableWebservice<Boo
 	{
 		log.debug("Try to create payload (content format: " + contentFormat + ")");
 		
-		DateFormat simpleDateFormat = new SimpleDateFormat("YYYY-MM-dd'T'hh:mm:ss");
-		simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-		String timestamp = simpleDateFormat.format(new Date());
+		String timestamp = getTimestamp();
 		boolean state = getStatus();
 		String template = payloadTemplates.get(contentFormat);
 		
