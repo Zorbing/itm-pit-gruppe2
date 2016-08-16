@@ -6,6 +6,7 @@ import java.util.Observer;
 
 import de.uniluebeck.itm.pit.hardware.AudioPassThrough;
 import de.uniluebeck.itm.pit.hardware.Rfid;
+import de.uniluebeck.itm.pit.ncoap.AudioPassThroughWebservice;
 import de.uniluebeck.itm.pit.ncoap.LoggingConfiguration;
 import de.uniluebeck.itm.pit.ncoap.RfidWebservice;
 import de.uniluebeck.itm.pit.ncoap.SimpleCoapServer;
@@ -14,6 +15,7 @@ public class App implements Observer
 {
 	private static final int lifetime = 60 * 10;
 	
+	private AudioPassThroughWebservice aptService;
 	private AudioPassThrough audio;
 	private String enteredUid = null;
 	private RfidWebservice rfidService;
@@ -28,6 +30,8 @@ public class App implements Observer
 		server = new SimpleCoapServer();
 		// create web service for rfid-uid
 		rfidService = new RfidWebservice("/rfid", server.getExecutor());
+		// create web service for audio pass through
+		aptService = new AudioPassThroughWebservice("/apt", server.getExecutor());
 		
 		audio = new AudioPassThrough();
 		audio.start();
@@ -71,6 +75,8 @@ public class App implements Observer
 			
 			// update last read card id in SSP
 			rfidService.setResourceStatus(uid, lifetime);
+			// update state of audio pass through
+			aptService.setResourceStatus(enteredUid != null, lifetime);
 		}
 		else
 		{
