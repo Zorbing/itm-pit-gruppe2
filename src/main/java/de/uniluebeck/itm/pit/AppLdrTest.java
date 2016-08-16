@@ -8,7 +8,7 @@ import com.pi4j.io.gpio.event.GpioPinListenerDigital;
 
 import de.uniluebeck.itm.pit.hardware.Ldr;
 import de.uniluebeck.itm.pit.hardware.Led;
-import de.uniluebeck.itm.pit.ncoap.LedObservableWebservice;
+import de.uniluebeck.itm.pit.ncoap.LedWebservice;
 import de.uniluebeck.itm.pit.ncoap.LoggingConfiguration;
 import de.uniluebeck.itm.pit.ncoap.SimpleCoapServer;
 
@@ -18,7 +18,7 @@ public class AppLdrTest implements GpioPinListenerDigital
 	
 	private Ldr ldr;
 	private Led led;
-	private LedObservableWebservice ledService;
+	private LedWebservice ledService;
 	private SimpleCoapServer server;
 	
 	public AppLdrTest() throws Exception
@@ -29,7 +29,7 @@ public class AppLdrTest implements GpioPinListenerDigital
 		// create coap server
 		server = new SimpleCoapServer();
 		// create web service for led state
-		ledService = new LedObservableWebservice("/led", server.getExecutor());
+		ledService = new LedWebservice("/led", server.getExecutor());
 		
 		ldr = new Ldr(RaspiPin.GPIO_07);
 		led = new Led(RaspiPin.GPIO_08);

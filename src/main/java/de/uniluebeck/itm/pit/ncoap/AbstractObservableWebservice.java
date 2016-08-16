@@ -23,7 +23,7 @@ public abstract class AbstractObservableWebservice<T> extends ObservableWebservi
 {
 	public static long DEFAULT_CONTENT_FORMAT = ContentFormat.TEXT_PLAIN_UTF8;
 	
-	protected static Logger log = Logger.getLogger(LedObservableWebservice.class.getName());
+	protected static Logger log = Logger.getLogger(LedWebservice.class.getName());
 	
 	public AbstractObservableWebservice(String uriPath, T initalStatus, ScheduledExecutorService executor,
 		String attributeValue, long maxSize)
@@ -149,6 +149,5 @@ public abstract class AbstractObservableWebservice<T> extends ObservableWebservi
 		
 		// Set the response future with the previously generated CoAP response
 		responseFuture.set(coapResponse);
-		
 	}
 }
