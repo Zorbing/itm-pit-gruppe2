@@ -1,8 +1,12 @@
 package de.uniluebeck.itm.pit.ncoap;
 
 import java.net.InetSocketAddress;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.TimeZone;
 import java.util.concurrent.ScheduledExecutorService;
 
 import org.apache.log4j.Logger;
@@ -46,6 +50,18 @@ public abstract class AbstractObservableWebservice<T> extends ObservableWebservi
 	}
 	
 	public abstract byte[] getSerializedResourceStatus(long contentFormat);
+	
+	protected String getTimestamp()
+	{
+		return getTimestamp(new Date());
+	}
+	
+	protected String getTimestamp(Date dt)
+	{
+		DateFormat simpleDateFormat = new SimpleDateFormat("YYYY-MM-dd'T'hh:mm:ss");
+		simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+		return simpleDateFormat.format(dt);
+	}
 	
 	// @Override
 	public void processCoapRequest(SettableFuture<CoapResponse> responseFuture, CoapRequest coapRequest,

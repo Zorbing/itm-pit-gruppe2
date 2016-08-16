@@ -11,7 +11,7 @@ import de.uniluebeck.itm.ncoap.communication.dispatching.client.Token;
 import de.uniluebeck.itm.ncoap.message.CoapMessage;
 import de.uniluebeck.itm.ncoap.message.options.ContentFormat;
 
-public class RfidWebservice extends AbstractObservableWebservice<String>
+public class AudioPassThroughWebservice extends AbstractObservableWebservice<Boolean>
 {
 	public static HashMap<Long, String> payloadTemplates = new HashMap<>();
 	
@@ -20,15 +20,15 @@ public class RfidWebservice extends AbstractObservableWebservice<String>
 		// Add template for plaintext UTF-8 payload
 		payloadTemplates.put(
 			ContentFormat.TEXT_PLAIN_UTF8,
-			"The last read UID (%s) is: %s");
+			"The audio pass through is currently (%s) on: %b");
 		
 		// Add template for XML payload
 		payloadTemplates.put(
 			ContentFormat.APP_XML,
-			"<rfid>\n" +
+			"<audio-pass-through>\n" +
 					"<time>%s</time>\n" +
-					"<uid>%s</uid>\n" +
-					"</rfid>");
+					"<state>%b</state>\n" +
+					"</audio-pass-through>");
 		
 		// Add template for Turtle payload
 		payloadTemplates.put(
@@ -36,36 +36,38 @@ public class RfidWebservice extends AbstractObservableWebservice<String>
 			Prefix.sparql +
 				"\n" +
 				Prefix.group + "_Pi rdf:type pit:Hardware .\n" +
-				Prefix.group + "_Pi pit:hasPart " + Prefix.group + "_RFID .\n" +
+				Prefix.group + "_Pi pit:hasPart " + Prefix.group + "_APT .\n" +
 				Prefix.group + "_Pi pit:isLocatedIn pit:Room2054 .\n" +
 				"\n" +
-				Prefix.group + "_RFID rdf:type pit:Hardware .\n" +
-				Prefix.group + "_RFID pit:hasSensor " + Prefix.group + "_RFID_Sensor .\n" +
+				Prefix.group + "_APT rdf:type pit:Hardware .\n" +
+				Prefix.group + "_APT pit:hasActuator " + Prefix.group + "_APT_Actuator .\n" +
 				"\n" +
-				Prefix.group + "_RFID_Sensor rdf:type pit:RFIDSensor .\n" +
-				Prefix.group + "_RFID_Sensor pit:observesPhenomenon pit:Room2054 .\n" +
+				// TODO:
+				Prefix.group + "_APT_Actuator rdf:type pit:Actuator .\n" +
+				Prefix.group + "_APT_Actuator pit:actsOnOperation pit:enableSpeaker .\n" +
+				"\n" +
+				"pit:enableSpeaker rdf:type pit:PulseOperation .\n" +
 				"\n" +
 				// static information which will be provided by the SSP
 				// "pit:Room2054 rdf:type pit:Phenomenon .\n" +
 				// "pit:Room2054 pit:isFeatureOf pit:Building64 .\n" +
 				// "\n" +
-				Prefix.group + "_Obs1 rdf:type pit:Observation .\n" +
-				Prefix.group + "_Obs1 pit:isStatusOf " + Prefix.group + "_RFID_Sensor .\n" +
-				Prefix.group + "_Obs1 pit:hasTimestamp \"%s\"^^xsd:dateTime .\n" +
-				Prefix.group + "_Obs1 pit:hasValue " + Prefix.group + "_Obs1_Value .\n" +
-				"\n" +
-				Prefix.group + "_Obs1_Value rdf:type pit:TypeObservationValue .\n" +
-				Prefix.group + "_Obs1_Value pit:hasType pit:HexBinary .\n" +
-				Prefix.group + "_Obs1_Value pit:literalValue \"%s\"^^xsd:hexBinary .");
+				Prefix.group + "_Comm1 rdf:type pit:Command .\n" +
+				Prefix.group + "_Comm1 pit:isCommandTo " + Prefix.group + "_APT_Actuator .\n" +
+				Prefix.group + "_Comm1 pit:isCommandOn pit:enableSpeaker .\n" +
+				Prefix.group + "_Comm1 pit:hasTimestamp \"%s\"^^xsd:dateTime .\n" +
+				Prefix.group + "_Comm1 pit:literalValue \"%b\"^^xsd:boolean .\n" +
+				Prefix.group + "_Comm1 pit:hasBeenExecuted \"%b\"^^xsd:boolean .\n");
 	}
 	
 	private int weakEtag;
 	
-	public RfidWebservice(String uriPath, ScheduledExecutorService executor)
+	public AudioPassThroughWebservice(String uriPath, ScheduledExecutorService executor)
 	{
-		super(uriPath, "", executor, "The last read CardId of the RFID", 1L);
+		super(uriPath, false, executor, "The enabled state of the audio pass through", 1L);
 	}
 	
+	@Override
 	public byte[] getEtag(long contentFormat)
 	{
 		return Ints.toByteArray(weakEtag & Longs.hashCode(contentFormat));
@@ -76,7 +78,7 @@ public class RfidWebservice extends AbstractObservableWebservice<String>
 		log.debug("Try to create payload (content format: " + contentFormat + ")");
 		
 		String timestamp = getTimestamp();
-		String tag = getStatus();
+		boolean state = getStatus();
 		String template = payloadTemplates.get(contentFormat);
 		
 		if (template == null)
@@ -85,7 +87,7 @@ public class RfidWebservice extends AbstractObservableWebservice<String>
 		}
 		else
 		{
-			return String.format(template, timestamp, tag).getBytes(CoapMessage.CHARSET);
+			return String.format(template, timestamp, state, true).getBytes(CoapMessage.CHARSET);
 		}
 	}
 	
@@ -96,7 +98,7 @@ public class RfidWebservice extends AbstractObservableWebservice<String>
 	}
 	
 	@Override
-	public void updateEtag(String resourceStatus)
+	public void updateEtag(Boolean resourceStatus)
 	{
 		weakEtag = resourceStatus.hashCode();
 	}
